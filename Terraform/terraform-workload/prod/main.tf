@@ -12,6 +12,16 @@ module "vpc" {
   one_nat_gateway_per_az = true
   single_nat_gateway = false
 
+  public_subnet_tags = {
+    "kubernetes.io/role/elb" = 1
+  }
+  
+  private_subnet_tags = {
+    "kubernetes.io/role/internal-elb" = 1
+    # Tags subnets for Karpenter auto-discovery
+    "karpenter.sh/discovery" = var.cluster_name
+  }
+  
   tags = local.common_tags
 }
 
@@ -22,6 +32,9 @@ module "eks" {
   cluster_name    = var.cluster_name
   cluster_version = var.cluster_version
 
+  enable_cluster_creator_admin_permissions = true
+  cluster_endpoint_public_access           = true
+  
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
@@ -29,6 +42,11 @@ module "eks" {
   eks_managed_node_groups = var.node_group_config
   cluster_addons          = var.cluster_addons
 
+
+  node_security_group_tags = merge(local.common_tags, {
+    "karpenter.sh/discovery" = var.cluster_name
+  })
+  
   tags = local.common_tags
 }
 
@@ -36,29 +54,18 @@ module "karpenter" {
   source = "terraform-aws-modules/eks/aws//modules/karpenter"
   version = "20.8.4"
 
-  cluster_name                   = module.eks.cluster_name
-  cluster_endpoint               = module.eks.cluster_endpoint
-  cluster_certificate_authority_data = module.eks.cluster_certificate_authority_data
+  cluster_name          = module.eks.cluster_name
+  cluster_endpoint      = module.eks.cluster_endpoint
+  oidc_provider_arn     = module.eks.oidc_provider_arn
 
-  irsa_oidc_provider_arn        = module.eks.oidc_provider_arn
-  irsa_namespace                = "kube-system"
-  irsa_service_account_name     = "karpenter"
-
-  create_iam_role               = true
-  iam_role_name                 = "${local.cluster_name}-karpenter"
-  iam_role_additional_policies = [
-    "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
-    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
-    "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
-    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
-    "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
-  ]
-
-  settings = {
-    clusterName         = module.eks.cluster_name
-    clusterEndpoint     = module.eks.cluster_endpoint
-    defaultInstanceProfile = module.eks.node_group_iam_instance_profile_name
+  node_iam_role_use_name_prefix   = false
+  node_iam_role_name              = "ex-karpenter"
+  
+  node_iam_role_additional_policies = {
+    AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
   }
+  
+  enable_v1_permissions = true
 
   tags = local.common_tags
 }

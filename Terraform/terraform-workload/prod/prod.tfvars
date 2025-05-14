@@ -28,6 +28,7 @@ node_group_config = {
 
       labels = {
         role = "system"
+		"karpenter.sh/controller" = "true"
       }
 
       tags = {
