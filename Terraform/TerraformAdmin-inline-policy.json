@@ -1,0 +1,30 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "TerraformBackendManagement",
+      "Effect": "Allow",
+      "Action": [
+        "s3:*",
+		"kms:*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AssumeTerraformExecutionRole",
+      "Effect": "Allow",
+      "Action": "sts:AssumeRole",
+      "Resource": [
+        "arn:aws:iam::*:role/TerraformExecutionRole"
+      ]
+    },
+    {
+      "Sid": "Tagging",
+      "Effect": "Allow",
+      "Action": [
+        "tag:TagResources"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
