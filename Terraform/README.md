@@ -61,7 +61,7 @@ region = us-east-1
 `
 2. Using AWS CLI login to Identity account SSO.
 `aws sso login --profile identity-sso`
-3. `cd terraform/backend && terraform init && terraform apply`
+3. `cd backend && terraform init && terraform plan && terraform apply`
 
 ## Create TerraformExecutionRole in Workload account
 This role will be used to create resources in Workload account. We will be creating it manually now, this later can be migrated to centralized IAM management.
@@ -83,4 +83,8 @@ This role will be used to create resources in Workload account. We will be creat
 }`
 4. Attach IAM Policy from TerraformExecutionRole-inline-policy.json
 	
-### VPC setup
+### Provisioning resources
+
+Terraform configuration provided will create EKS cluster with Karpenter installed into it and create two Karpenter NodePools and EC2NodeClasses
+
+`cd terraform-workload/prod && terraform init && terraform plan && terraform apply`

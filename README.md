@@ -97,14 +97,16 @@ To avoid confusion, I am not using a misleading 'x86 pool', instead consolidatin
 1. Graviton NodePool
 	1. Instance Types: c7g.large, m7g.large, r7g.large
 	2. Definition:
-		`apiVersion: karpenter.k8s.aws/v1alpha1
+		`apiVersion: karpenter.sh/v1
 kind: NodePool
 metadata:
   name: graviton-nodepool
 spec:
   template:
     spec:
-      providerRef:
+      nodeClassRef:
+	    group: karpenter.k8s.aws
+		kind: EC2NodeClass
         name: graviton-nodeclass
       requirements:
         - key: "kubernetes.io/arch"
@@ -113,29 +115,33 @@ spec:
         - key: "karpenter.k8s.aws/capacity-type"
           operator: In
           values: ["SPOT", "ON_DEMAND"]
-      instanceTypes:
-        - "c7g.large"
-        - "c7g.xlarge"
-        - "c7g.2xlarge"
-        - "m7g.large"
-        - "m7g.xlarge"
-        - "m7g.2xlarge"
+        - key: "node.kubernetes.io/instance-type"
+          operator: In
+          values:
+            - "c7g.large"
+            - "c7g.xlarge"
+            - "c7g.2xlarge"
+            - "m7g.large"
+            - "m7g.xlarge"
+            - "m7g.2xlarge"
   limits:
-    cpu: "1000"
-  consolidation:
-    enabled: true
+    cpu: 1000
+  disruption:
+    consolidationPolicy: WhenEmpty
 `
 2. AMD64 NodePool
 	1. Instance Types: c5.large, m5.large, r5.large
 	2. Definition:
-		`apiVersion: karpenter.k8s.aws/v1alpha1
+		`apiVersion: karpenter.sh/v1
 kind: NodePool
 metadata:
   name: amd64-nodepool
 spec:
   template:
     spec:
-      providerRef:
+      nodeClassRef:
+	    group: karpenter.k8s.aws
+		kind: EC2NodeClass
         name: amd64-nodeclass
       requirements:
         - key: "kubernetes.io/arch"
@@ -144,20 +150,22 @@ spec:
         - key: "karpenter.k8s.aws/capacity-type"
           operator: In
           values: ["SPOT", "ON_DEMAND"]
-      instanceTypes:
-        - "c5.large"
-        - "c5.xlarge"
-        - "c5.2xlarge"
-        - "m5.large"
-        - "m5.xlarge"
-        - "m5.2xlarge"
-        - "r5.large"
-        - "r5.xlarge"
-        - "r5.2xlarge"
+        - key: "node.kubernetes.io/instance-type"
+          operator: In
+          values:
+            - "c5.large"
+            - "c5.xlarge"
+            - "c5.2xlarge"
+            - "m5.large"
+            - "m5.xlarge"
+            - "m5.2xlarge"
+            - "r5.large"
+            - "r5.xlarge"
+            - "r5.2xlarge"
   limits:
-    cpu: "2000"
-  consolidation:
-    enabled: true
+    cpu: 2000
+  disruption:
+    consolidationPolicy: WhenEmpty
 `
 
 Now we can execute the following scenarios:

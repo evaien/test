@@ -21,7 +21,7 @@
       "Resource": "*"
     },
     {
-      "Sid": "VPCAndNetworkingPermissions",
+      "Sid": "ComputePermissions",
       "Effect": "Allow",
       "Action": [
         "ec2:DescribeSubnets",
@@ -33,6 +33,12 @@
         "ec2:CreateVpc",
         "ec2:AssociateRouteTable",
         "ec2:DescribeRouteTables"
+		"ec2:DescribeImages",
+        "ec2:DescribeInstanceTypes",
+        "ec2:DescribeLaunchTemplates",
+        "ec2:CreateLaunchTemplate",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeAvailabilityZones"
       ],
       "Resource": "*"
     },
@@ -46,7 +52,10 @@
         "iam:AttachRolePolicy",
         "iam:DetachRolePolicy",
         "iam:CreateInstanceProfile",
-        "iam:DeleteInstanceProfile"
+        "iam:DeleteInstanceProfile",
+		"iam:GetOpenIDConnectProvider",
+        "iam:CreateOpenIDConnectProvider",
+        "iam:DeleteOpenIDConnectProvider"
       ],
       "Resource": "*"
     },
