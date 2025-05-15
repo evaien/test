@@ -98,3 +98,19 @@ This role will be used to create resources in Workload account. We will be creat
 Terraform configuration provided will create EKS cluster with Karpenter installed into it and create two Karpenter NodePools and EC2NodeClasses
 
 ```cd terraform-workload/prod && terraform init && terraform plan -var-file=prod.tfvars && terraform apply -var-file=prod.tfvars```
+
+| Attention |
+|-----------|
+| In this example I am deploying Karpenter helm chart using Terraform and appying Karpenter NodeClass/NodePool resources manually due to the nature of [kubernetes provider](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs)|
+| Innovate Inc. should use other CI/CD tools of their choice to deploy helm charts and kubernetes resources to the cluster |
+
+
+### Apply Kubernetes manifests
+
+Authenticate to Workload account with administrative permissions and update your local kubeconfig.
+
+Apply Karpenter NodeClass/NodePool resources
+
+```
+kubectl apply -f karpenter.yaml
+```
