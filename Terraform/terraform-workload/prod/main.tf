@@ -71,7 +71,7 @@ module "karpenter" {
 }
 
 resource "helm_release" "karpenter" {
-  provider   = helm.workload
+  provider   = helm
   name       = "karpenter"
   namespace  = "kube-system"
   repository = "https://charts.karpenter.sh"

@@ -100,13 +100,13 @@ resource "kubernetes_manifest" "graviton_nodepool" {
         cpu = "1000"
       }
       disruption = {
-        consolidationPolicy : WhenEmpty
+        consolidationPolicy = "WhenEmpty"
       }
     }
   }
 }
 
-resource "kubernetes_manifest" "graviton_nodepool" {
+resource "kubernetes_manifest" "amd64_nodepool" {
 
   provider = kubernetes
 
@@ -147,7 +147,7 @@ resource "kubernetes_manifest" "graviton_nodepool" {
         cpu = "2000"
       }
       disruption = {
-        consolidationPolicy : WhenEmpty
+        consolidationPolicy = "WhenEmpty"
       }
     }
   }

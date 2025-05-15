@@ -5,13 +5,20 @@ terraform {
     region        = "us-east-1"
     profile       = "terraform-admin"
     encrypt       = true
-    bucket_prefix = "terraform/"
   }
 
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.0"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "3.0.0-pre2"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "2.36.0"
     }
   }
 }

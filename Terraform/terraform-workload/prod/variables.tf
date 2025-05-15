@@ -1,4 +1,8 @@
-variable "aws_account_id" {
+variable "target_account_id" {
+  type = string
+}
+
+variable "terraform_role_name" {
   type = string
 }
 

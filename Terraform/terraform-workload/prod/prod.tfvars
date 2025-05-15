@@ -1,4 +1,5 @@
-aws_account_id  = "11111111111"
+target_account_id  = "11111111111"
+terraform_role_name = "TerraformExecutionRole"
 region          = "us-east-1"
 vpc_name        = "prod-vpc"
 vpc_cidr        = "10.0.0.0/16"
