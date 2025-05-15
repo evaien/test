@@ -18,7 +18,7 @@ module "vpc" {
 
   private_subnet_tags = {
     "kubernetes.io/role/internal-elb" = 1
-    "karpenter.sh/discovery" = var.cluster_name
+    "karpenter.sh/discovery"          = var.cluster_name
   }
 
   tags = local.common_tags
@@ -71,12 +71,14 @@ module "karpenter" {
 }
 
 resource "helm_release" "karpenter" {
-  provider   = helm
-  name       = "karpenter"
-  namespace  = "kube-system"
-  repository = "https://charts.karpenter.sh"
-  chart      = "karpenter"
-  version    = "1.4.0"
+  provider            = helm
+  name                = "karpenter"
+  namespace           = "kube-system"
+  repository          = "oci://public.ecr.aws/karpenter"
+  repository_username = data.aws_ecrpublic_authorization_token.token.user_name
+  repository_password = data.aws_ecrpublic_authorization_token.token.password
+  chart               = "karpenter"
+  version             = "1.4.0"
 
   set = [
     {

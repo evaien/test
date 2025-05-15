@@ -1,13 +1,12 @@
 terraform {
   backend "s3" {
-    bucket        = "innovate-tf-state"
-    key           = "environments/prod/terraform.tfstate"
-    region        = "us-east-1"
-    profile       = "terraform-admin"
-	dynamodb_table = "terraform-state-lock"
-    encrypt       = true
+    bucket         = "innovate-tf-state"
+    key            = "environments/prod/terraform.tfstate"
+    region         = "us-east-1"
+    profile        = "terraform-admin"
+    dynamodb_table = "terraform-state-lock"
+    encrypt        = true
   }
-
   required_providers {
     aws = {
       source  = "hashicorp/aws"

@@ -97,4 +97,4 @@ This role will be used to create resources in Workload account. We will be creat
 
 Terraform configuration provided will create EKS cluster with Karpenter installed into it and create two Karpenter NodePools and EC2NodeClasses
 
-```cd terraform-workload/prod && terraform init && terraform plan && terraform apply```
+```cd terraform-workload/prod && terraform init && terraform plan -var-file=prod.tfvars && terraform apply -var-file=prod.tfvars```

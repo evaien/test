@@ -46,6 +46,7 @@
       "Sid": "IAMRolePermissions",
       "Effect": "Allow",
       "Action": [
+	    "iam:GetRole",
         "iam:PassRole",
         "iam:CreateRole",
         "iam:DeleteRole",
