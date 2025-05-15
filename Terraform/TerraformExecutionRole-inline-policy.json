@@ -32,7 +32,7 @@
         "ec2:CreateSubnet",
         "ec2:CreateVpc",
         "ec2:AssociateRouteTable",
-        "ec2:DescribeRouteTables"
+        "ec2:DescribeRouteTables",
 		"ec2:DescribeImages",
         "ec2:DescribeInstanceTypes",
         "ec2:DescribeLaunchTemplates",
